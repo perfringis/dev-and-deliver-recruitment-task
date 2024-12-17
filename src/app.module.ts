@@ -34,7 +34,6 @@ import { FilmRepository } from './repository/FilmRepository';
   providers: [
     // repositories
     FilmRepository,
-    
     // services
     FilmService,
   ],

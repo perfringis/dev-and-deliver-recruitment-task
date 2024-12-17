@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../common/BaseEntity';
+import { BaseEntity } from '../common/base.entity';
 
 @Entity({ name: 'film' })
 export class Film extends BaseEntity {
@@ -35,4 +35,48 @@ export class Film extends BaseEntity {
 
   @Column({ name: 'planets', type: 'simple-array' })
   private planets: string[];
+
+  public getTitle(): string {
+    return this.title;
+  }
+
+  public getEpisodeId(): string {
+    return this.episodeId;
+  }
+
+  public getOpeningCrawl(): string {
+    return this.openingCrawl;
+  }
+
+  public getDirector(): string {
+    return this.director;
+  }
+
+  public getProducer(): string {
+    return this.producer;
+  }
+
+  public getReleaseDate(): string {
+    return this.releaseDate;
+  }
+
+  public getSpecies(): string[] {
+    return this.species;
+  }
+
+  public getStarships(): string[] {
+    return this.starships;
+  }
+
+  public getVehicles(): string[] {
+    return this.vehicles;
+  }
+
+  public getCharacters(): string[] {
+    return this.characters;
+  }
+
+  public getPlanets(): string[] {
+    return this.planets;
+  }
 }

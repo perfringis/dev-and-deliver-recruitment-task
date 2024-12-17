@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../common/BaseEntity';
+import { BaseEntity } from '../common/base.entity';
 
 @Entity({ name: 'species' })
 export class Species extends BaseEntity {
@@ -38,4 +38,52 @@ export class Species extends BaseEntity {
 
   @Column({ name: 'films', type: 'simple-array' })
   private films: string[];
+
+  public getName(): string {
+    return this.name;
+  }
+
+  public getClassification(): string {
+    return this.classification;
+  }
+
+  public getDesignation(): string {
+    return this.designation;
+  }
+
+  public getAverageHeight(): string {
+    return this.averageHeight;
+  }
+
+  public getAverageLifespan(): string {
+    return this.averageLifespan;
+  }
+
+  public getEyeColors(): string {
+    return this.eyeColors;
+  }
+
+  public getHairColors(): string {
+    return this.hairColors;
+  }
+
+  public getSkin_colors(): string {
+    return this.skin_colors;
+  }
+
+  public getLanguage(): string {
+    return this.language;
+  }
+
+  public getHomeWorld(): string {
+    return this.homeWorld;
+  }
+
+  public getPeople(): string[] {
+    return this.people;
+  }
+
+  public getFilms(): string[] {
+    return this.films;
+  }
 }
