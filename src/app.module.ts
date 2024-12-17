@@ -2,8 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AppController } from './controller/app.controller';
-import { AppService } from './service/app.service';
+import { Film } from './entity/film.entity';
+import { Person } from './entity/person.entity';
+import { Planet } from './entity/planet.entity';
+import { Species } from './entity/species.entity';
+import { Starship } from './entity/starship.entity';
+import { Vehicle } from './entity/vehicle.entity';
 
 @Module({
   imports: [
@@ -20,10 +24,10 @@ import { AppService } from './service/app.service';
       autoLoadEntities: true,
       synchronize: true,
       logging: true,
-      entities: [],
+      entities: [Film, Person, Planet, Species, Starship, Vehicle],
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
