@@ -1,12 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Person } from './person.entity';
 import { Film } from './film.entity';
+import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'planet' })
-export class Planet {
-  @PrimaryColumn({ name: 'id', type: 'varchar' })
-  private id: string;
-
+export class Planet extends BaseEntity {
   @Column({ name: 'name', type: 'varchar' })
   private name: string;
 
@@ -33,12 +31,6 @@ export class Planet {
 
   @Column({ name: 'surface_water' })
   private surfaceWater: string;
-
-  @Column({ name: 'created_at', type: 'timestamptz' })
-  private createdAt: string;
-
-  @Column({ name: 'edited_at', type: 'timestamptz' })
-  private editedAt: string;
 
   @OneToMany(() => Person, (person) => person.homeWorld)
   public residents: Person[];

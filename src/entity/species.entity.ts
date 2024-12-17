@@ -1,13 +1,17 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Planet } from './planet.entity';
 import { Person } from './person.entity';
 import { Film } from './film.entity';
+import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'species' })
-export class Species {
-  @PrimaryColumn({ name: 'id' })
-  private id: string;
-
+export class Species extends BaseEntity {
   @Column({ name: 'name' })
   private name: string;
 
@@ -34,12 +38,6 @@ export class Species {
 
   @Column({ name: 'language' })
   private language: string;
-
-  @Column({ name: 'created_at', type: 'timestamptz' })
-  private createdAt: string;
-
-  @Column({ name: 'edited_at', type: 'timestamptz' })
-  private editedAt: string;
 
   @OneToOne(() => Planet, (planet) => planet)
   @JoinColumn({ name: 'planet_id' })

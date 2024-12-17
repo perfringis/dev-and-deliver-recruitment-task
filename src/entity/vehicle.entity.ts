@@ -1,12 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Film } from './film.entity';
 import { Person } from './person.entity';
+import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'vehicle' })
-export class Vehicle {
-  @PrimaryColumn({ name: 'id' })
-  private id: string;
-
+export class Vehicle extends BaseEntity {
   @Column({ name: 'name' })
   private name: string;
 
@@ -39,12 +37,6 @@ export class Vehicle {
 
   @Column({ name: 'consumables' })
   private consumables: string;
-
-  @Column({ name: 'created_at', type: 'timestamptz' })
-  private createdAt: string;
-
-  @Column({ name: 'edited_at', type: 'timestamptz' })
-  private editedAt: string;
 
   @OneToMany(() => Film, (film) => film.vehicles)
   public films: Film[];

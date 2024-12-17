@@ -1,15 +1,13 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { Species } from './species.entity';
 import { Starship } from './starship.entity';
 import { Vehicle } from './vehicle.entity';
 import { Person } from './person.entity';
 import { Planet } from './planet.entity';
+import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'film' })
-export class Film {
-  @PrimaryColumn({ name: 'id', type: 'varchar' })
-  private id: string;
-
+export class Film extends BaseEntity {
   @Column({ name: 'title', type: 'varchar' })
   private title: string;
 
@@ -27,12 +25,6 @@ export class Film {
 
   @Column({ name: 'release_date', type: 'date' })
   private releaseDate: Date;
-
-  @Column({ name: 'created_at', type: 'timestamptz' })
-  private createdAt: string;
-
-  @Column({ name: 'edited_at', type: 'timestamptz' })
-  private editedAt: string;
 
   @ManyToMany(() => Species, (species) => species.films)
   @JoinTable({

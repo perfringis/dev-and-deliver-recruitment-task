@@ -1,12 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Film } from './film.entity';
 import { Person } from './person.entity';
+import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'starship' })
-export class Starship {
-  @PrimaryColumn({ name: 'id' })
-  private id: string;
-
+export class Starship extends BaseEntity {
   @Column({ name: 'name' })
   private name: string;
 
@@ -45,12 +43,6 @@ export class Starship {
 
   @Column({ name: 'consumables' })
   private consumables: string;
-
-  @Column({ name: 'created_at', type: 'timestamptz' })
-  private createdAt: string;
-
-  @Column({ name: 'edited_at', type: 'timestamptz' })
-  private editedAt: string;
 
   @OneToMany(() => Film, (film) => film.starships)
   public films: Film[];
