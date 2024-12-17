@@ -1,6 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
-import { Film } from './film.entity';
-import { Person } from './person.entity';
+import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../common/BaseEntity';
 
 @Entity({ name: 'vehicle' })
@@ -38,9 +36,9 @@ export class Vehicle extends BaseEntity {
   @Column({ name: 'consumables' })
   private consumables: string;
 
-  @OneToMany(() => Film, (film) => film.vehicles)
-  public films: Film[];
+  @Column({ name: 'films', type: 'simple-array' })
+  private films: string[];
 
-  @OneToMany(() => Person, (person) => person.vehicles)
-  public pilots: Person[];
+  @Column({ name: 'pilots', type: 'simple-array' })
+  private pilots: string[];
 }

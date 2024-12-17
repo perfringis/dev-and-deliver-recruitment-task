@@ -8,6 +8,9 @@ import { Planet } from './entity/planet.entity';
 import { Species } from './entity/species.entity';
 import { Starship } from './entity/starship.entity';
 import { Vehicle } from './entity/vehicle.entity';
+import { FilmController } from './controller/film.controller';
+import { FilmService } from './service/film.service';
+import { FilmRepository } from './repository/FilmRepository';
 
 @Module({
   imports: [
@@ -27,7 +30,13 @@ import { Vehicle } from './entity/vehicle.entity';
       entities: [Film, Person, Planet, Species, Starship, Vehicle],
     }),
   ],
-  controllers: [],
-  providers: [],
+  controllers: [FilmController],
+  providers: [
+    // repositories
+    FilmRepository,
+    
+    // services
+    FilmService,
+  ],
 })
 export class AppModule {}
