@@ -25,6 +25,7 @@ import { PlanetController } from './controller/planet.controller';
 import { SpeciesController } from './controller/species.controller';
 import { StarshipController } from './controller/starship.controller';
 import { VehicleController } from './controller/vehicle.controller';
+import { StarWarsAPI } from './api/swapi';
 
 @Module({
   imports: [
@@ -68,6 +69,9 @@ import { VehicleController } from './controller/vehicle.controller';
     SpeciesService,
     StarshipService,
     VehicleService,
+
+    // api
+    StarWarsAPI,
   ],
 })
 export class AppModule {}

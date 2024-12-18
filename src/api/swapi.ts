@@ -1,34 +1,45 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import { FilmData } from './data/film.data';
 
 @Injectable()
-export class StarWasAPI {
+export class StarWarsAPI {
   private readonly BASE_URL = 'https://swapi.tech/api';
 
   public async getFilms() {
     try {
       const response = await fetch(`${this.BASE_URL}/films`);
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+        throw new HttpException(
+          `[SWAPI] Message: ${response.statusText}`,
+          response.status,
+        );
       }
 
       const json = await response.json();
       return json;
     } catch (error) {
-      console.error(error.message);
+      if (error instanceof HttpException) {
+        throw error;
+      }
     }
   }
 
-  public async getFilm(id: string): Promise<any> {
+  public async getFilm(id: string): Promise<FilmData> {
     try {
       const response = await fetch(`${this.BASE_URL}/films/${id}`);
       if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
+        throw new HttpException(
+          `[SWAPI] Message: ${response.statusText}`,
+          response.status,
+        );
       }
 
       const json = await response.json();
-      return json;
+      return this.toFilmData(json);
     } catch (error) {
-      console.error(error.message);
+      if (error instanceof HttpException) {
+        throw error;
+      }
     }
   }
 
@@ -51,4 +62,25 @@ export class StarWasAPI {
   // public async getVehicles() {}
   //
   // public async getVehicle(id: string) {}
+
+  private toFilmData(data): FilmData {
+    const filmData: FilmData = new FilmData();
+    filmData.setId(data.result.uid);
+    filmData.setTitle(data.result.properties.title);
+    filmData.setEpisodeId(data.result.properties.episode_id);
+    filmData.setOpeningCrawl(data.result.properties.opening_crawl);
+    filmData.setDirector(data.result.properties.director);
+    filmData.setProducer(data.result.properties.producer);
+    filmData.setReleaseDate(data.result.properties.release_date);
+    filmData.setSpecies(data.result.properties.species);
+    filmData.setStarships(data.result.properties.starships);
+    filmData.setVehicles(data.result.properties.vehicles);
+    filmData.setCharacters(data.result.properties.characters);
+    filmData.setPlanets(data.result.properties.planets);
+    filmData.setUrl(data.result.properties.url);
+    filmData.setCreatedAt(data.result.properties.created);
+    filmData.setEditedAt(data.result.properties.edited);
+
+    return filmData;
+  }
 }

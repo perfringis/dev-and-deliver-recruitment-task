@@ -1,40 +1,27 @@
-import { Column, Entity } from 'typeorm';
-import { BaseEntity } from '../common/base.entity';
-
-@Entity({ name: 'film' })
-export class Film extends BaseEntity {
-  @Column({ name: 'title', type: 'varchar' })
+export class FilmData {
+  private id: string;
   private title: string;
-
-  @Column({ name: 'episode_id', type: 'varchar' })
   private episodeId: string;
-
-  @Column({ name: 'opening_crawl', type: 'varchar' })
   private openingCrawl: string;
-
-  @Column({ name: 'director', type: 'varchar' })
   private director: string;
-
-  @Column({ name: 'producer', type: 'varchar' })
   private producer: string;
-
-  @Column({ name: 'release_date', type: 'varchar' })
   private releaseDate: string;
-
-  @Column({ name: 'species', type: 'simple-array' })
   private species: string[];
-
-  @Column({ name: 'starships', type: 'simple-array' })
   private starships: string[];
-
-  @Column({ name: 'vehicles', type: 'simple-array' })
   private vehicles: string[];
-
-  @Column({ name: 'characters', type: 'simple-array' })
   private characters: string[];
-
-  @Column({ name: 'planets', type: 'simple-array' })
   private planets: string[];
+  private url: string;
+  private createdAt: string;
+  private editedAt: string;
+
+  public getId(): string {
+    return this.id;
+  }
+
+  public setId(value: string) {
+    this.id = value;
+  }
 
   public getTitle(): string {
     return this.title;
@@ -122,5 +109,29 @@ export class Film extends BaseEntity {
 
   public setPlanets(value: string[]) {
     this.planets = value;
+  }
+
+  public getUrl(): string {
+    return this.url;
+  }
+
+  public setUrl(value: string) {
+    this.url = value;
+  }
+
+  public getCreatedAt(): string {
+    return this.createdAt;
+  }
+
+  public setCreatedAt(value: string) {
+    this.createdAt = value;
+  }
+
+  public getEditedAt(): string {
+    return this.editedAt;
+  }
+
+  public setEditedAt(value: string) {
+    this.editedAt = value;
   }
 }
