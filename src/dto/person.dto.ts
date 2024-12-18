@@ -1,3 +1,5 @@
+import { Person } from '../entity/person.entity';
+
 export class PersonDTO {
   private name: string;
   private birthYear: string;
@@ -13,6 +15,23 @@ export class PersonDTO {
   private starships: string[];
   private vehicles: string[];
   private url: string;
+
+  constructor(person: Person) {
+    this.name = person.getName();
+    this.birthYear = person.getBirthYear();
+    this.eyeColor = person.getEyeColor();
+    this.gender = person.getGender();
+    this.hairColor = person.getHairColor();
+    this.height = person.getHeight();
+    this.mass = person.getMass();
+    this.skinColor = person.getSkinColor();
+    this.homeWorld = person.getHomeWorld();
+    this.films = person.getFilms();
+    this.species = person.getSpecies();
+    this.starships = person.getStarships();
+    this.vehicles = person.getVehicles();
+    this.url = person.getUrl();
+  }
 
   public getName(): string {
     return this.name;

@@ -1,3 +1,5 @@
+import { Starship } from '../entity/starship.entity';
+
 export class StarshipDTO {
   private name: string;
   private model: string;
@@ -15,6 +17,25 @@ export class StarshipDTO {
   private films: string[];
   private pilots: string[];
   private url: string;
+
+  constructor(starship: Starship) {
+    this.name = starship.getName();
+    this.model = starship.getModel();
+    this.starshipClass = starship.getStarshipClass();
+    this.manufacturer = starship.getManufacturer();
+    this.costInCredits = starship.getCostInCredits();
+    this.length = starship.getLength();
+    this.crew = starship.getCrew();
+    this.passengers = starship.getPassengers();
+    this.maxAtmospheringSpeed = starship.getMaxAtmospheringSpeed();
+    this.hyperDriveRating = starship.getHyperDriveRating();
+    this.mglt = starship.getMglt();
+    this.cargoCapacity = starship.getCargoCapacity();
+    this.consumables = starship.getConsumables();
+    this.films = starship.getFilms();
+    this.pilots = starship.getPilots();
+    this.url = starship.getUrl();
+  }
 
   public getName(): string {
     return this.name;

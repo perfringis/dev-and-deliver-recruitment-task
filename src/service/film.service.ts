@@ -1,16 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { StarWasAPI } from '../api/swapi';
-import { FilmRepository } from '../repository/FilmRepository';
-import { PageDTO } from '../dto/page.dto';
-import { FilmDTO } from '../dto/film.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { FilmRepository } from '../repository/film.repository';
 import { Film } from '../entity/film.entity';
+import { FilmDTO } from '../dto/film.dto';
+import { PageDTO } from '../dto/page.dto';
 
 @Injectable()
 export class FilmService {
-  constructor(
-    private readonly starWasAPI: StarWasAPI,
-    private readonly filmRepository: FilmRepository,
-  ) {}
+  constructor(private readonly filmRepository: FilmRepository) {}
 
   public async getFilms(
     page: number,
@@ -26,6 +22,10 @@ export class FilmService {
 
   public async getFilm(id: string): Promise<FilmDTO> {
     const film: Film = await this.filmRepository.findById(id);
+
+    if (!film) {
+      throw new NotFoundException(`Film does not exist, id = ${id}`);
+    }
 
     return this.toDTO(film);
   }

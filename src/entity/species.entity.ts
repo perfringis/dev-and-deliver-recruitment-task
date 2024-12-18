@@ -24,8 +24,8 @@ export class Species extends BaseEntity {
   @Column({ name: 'hair_colors', type: 'varchar' })
   private hairColors: string;
 
-  @Column({ name: 'skinColors', type: 'varchar' })
-  private skin_colors: string;
+  @Column({ name: 'skin_colors', type: 'varchar' })
+  private skinColors: string;
 
   @Column({ name: 'language', type: 'varchar' })
   private language: string;
@@ -67,8 +67,8 @@ export class Species extends BaseEntity {
     return this.hairColors;
   }
 
-  public getSkin_colors(): string {
-    return this.skin_colors;
+  public getSkinColors(): string {
+    return this.skinColors;
   }
 
   public getLanguage(): string {

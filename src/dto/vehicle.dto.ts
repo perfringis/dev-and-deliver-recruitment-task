@@ -1,3 +1,5 @@
+import { Vehicle } from '../entity/vehicle.entity';
+
 export class VehicleDTO {
   private name: string;
   private model: string;
@@ -13,6 +15,23 @@ export class VehicleDTO {
   private films: string[];
   private pilots: string[];
   private url: string;
+
+  constructor(vehicle: Vehicle) {
+    this.name = vehicle.getName();
+    this.model = vehicle.getModel();
+    this.vehicleClass = vehicle.getVehicleClass();
+    this.manufacturer = vehicle.getManufacturer();
+    this.length = vehicle.getLength();
+    this.costInCredits = vehicle.getCostInCredits();
+    this.crew = vehicle.getCrew();
+    this.passengers = vehicle.getPassengers();
+    this.maxAtmospheringSpeed = vehicle.getMaxAtmospheringSpeed();
+    this.cargoCapacity = vehicle.getCargoCapacity();
+    this.consumables = vehicle.getConsumables();
+    this.films = vehicle.getFilms();
+    this.pilots = vehicle.getPilots();
+    this.url = vehicle.getUrl();
+  }
 
   public getName(): string {
     return this.name;

@@ -1,3 +1,5 @@
+import { Planet } from '../entity/planet.entity';
+
 export class PlanetDTO {
   private name: string;
   private diameter: string;
@@ -11,6 +13,21 @@ export class PlanetDTO {
   private residents: string[];
   private films: string[];
   private url: string;
+
+  constructor(planet: Planet) {
+    this.name = planet.getName();
+    this.diameter = planet.getDiameter();
+    this.rotationPeriod = planet.getRotationPeriod();
+    this.orbitalPeriod = planet.getOrbitalPeriod();
+    this.gravity = planet.getGravity();
+    this.population = planet.getPopulation();
+    this.climate = planet.getClimate();
+    this.terrain = planet.getTerrain();
+    this.surfaceWater = planet.getSurfaceWater();
+    this.residents = planet.getResidents();
+    this.films = planet.getFilms();
+    this.url = planet.getUrl();
+  }
 
   public getName(): string {
     return this.name;
