@@ -6,6 +6,7 @@ import { FilmRepository } from 'src/repository/film.repository';
 import { Film } from 'src/entity/film.entity';
 import { FilmDTO } from 'src/dto/film.dto';
 import { PageDTO } from 'src/dto/page.dto';
+import { NotFoundException } from '@nestjs/common';
 
 describe('film integration test', () => {
   let filmRepository: FilmRepository;
@@ -58,6 +59,11 @@ describe('film integration test', () => {
     expect(dto).not.toBeNull();
     expect(dto.getTitle()).toEqual('A New Hope');
     expect(dto.getUrl()).toEqual('https://www.swapi.tech/api/films/1');
+  });
+
+  test('getFilm - should throw error when film is not found', async () => {
+    // expect
+    await expect(filmService.getFilm('999')).rejects.toThrow(NotFoundException);
   });
 
   test('getFilms - should cache requested films when database is empty', async () => {
