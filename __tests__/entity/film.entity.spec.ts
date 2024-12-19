@@ -17,30 +17,28 @@ describe('film entity test', () => {
     filmRepository = app.get<FilmRepository>(FilmRepository);
   });
 
+  afterEach(async () => {
+    await filmRepository.delete({});
+  });
+
   test('should check expired film entity', async () => {
     // when
-    const cachedAt = dayjs().subtract(25, 'hours');
+    const cachedAt = dayjs().subtract(25, 'hours').toDate();
     // and
-    const film: Film = await createFilm(cachedAt.toDate());
+    const film: Film = await createFilm('1', cachedAt);
 
     // then
     expect(film.expired()).toEqual(true);
-
-    // after
-    await deleteFilm(film);
   });
 
   test('should check not expired film entity', async () => {
     // when
-    const cachedAt = dayjs(); // now
+    const cachedAt = dayjs().toDate();
     // and
-    const film: Film = await createFilm(cachedAt.toDate());
+    const film: Film = await createFilm('2', cachedAt);
 
     // then
     expect(film.expired()).toEqual(false);
-
-    // after
-    await deleteFilm(film);
   });
 
   const _species = (): string[] => {
@@ -52,6 +50,7 @@ describe('film entity test', () => {
       'https://www.swapi.tech/api/species/5',
     ];
   };
+
   const _starships = (): string[] => {
     return [
       'https://www.swapi.tech/api/starships/2',
@@ -64,6 +63,7 @@ describe('film entity test', () => {
       'https://www.swapi.tech/api/starships/13',
     ];
   };
+
   const _vehicles = (): string[] => {
     return [
       'https://www.swapi.tech/api/vehicles/4',
@@ -72,6 +72,7 @@ describe('film entity test', () => {
       'https://www.swapi.tech/api/vehicles/8',
     ];
   };
+
   const _characters = (): string[] => {
     return [
       'https://www.swapi.tech/api/people/1',
@@ -94,6 +95,7 @@ describe('film entity test', () => {
       'https://www.swapi.tech/api/people/81',
     ];
   };
+
   const _planets = (): string[] => {
     return [
       'https://www.swapi.tech/api/planets/1',
@@ -102,10 +104,10 @@ describe('film entity test', () => {
     ];
   };
 
-  const _film = (): Film => {
+  const _film = (id: string): Film => {
     const film: Film = new Film();
 
-    film.setId('1');
+    film.setId(id);
     film.setTitle('A New Hope');
     film.setEpisodeId('4');
     film.setOpeningCrawl(
@@ -126,14 +128,10 @@ describe('film entity test', () => {
     return film;
   };
 
-  const createFilm = async (cacheAt: Date): Promise<Film> => {
-    const film: Film = _film();
+  const createFilm = async (id: string, cacheAt: Date): Promise<Film> => {
+    const film: Film = _film(id);
     film.setCachedAt(cacheAt);
 
     return await filmRepository.save(film);
-  };
-
-  const deleteFilm = async (film: Film): Promise<void> => {
-    await filmRepository.remove(film);
   };
 });

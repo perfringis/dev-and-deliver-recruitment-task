@@ -13,6 +13,7 @@ export class FilmDTO {
   private characters: string[];
   private planets: string[];
   private url: string;
+  private cachedAt: Date;
 
   constructor(film: Film) {
     this.title = film.getTitle();
@@ -27,6 +28,7 @@ export class FilmDTO {
     this.characters = film.getCharacters();
     this.planets = film.getPlanets();
     this.url = film.getUrl();
+    this.cachedAt = film.getCachedAt();
   }
 
   public getTitle(): string {
@@ -123,5 +125,13 @@ export class FilmDTO {
 
   public setUrl(value: string) {
     this.url = value;
+  }
+
+  public getCachedAt(): Date {
+    return this.cachedAt;
+  }
+
+  public setCachedAt(value: Date) {
+    this.cachedAt = value;
   }
 }

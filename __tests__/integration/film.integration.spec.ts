@@ -6,6 +6,7 @@ import { FilmData } from 'src/api/data/film.data';
 import { FilmRepository } from 'src/repository/film.repository';
 import { Film } from 'src/entity/film.entity';
 import { FilmDTO } from 'src/dto/film.dto';
+import * as dayjs from 'dayjs';
 
 describe('film integration test', () => {
   let filmRepository: FilmRepository;
@@ -24,35 +25,82 @@ describe('film integration test', () => {
     starWarsAPI = app.get<StarWarsAPI>(StarWarsAPI);
   });
 
+  afterEach(async () => {
+    await filmRepository.delete({});
+  });
+
   test('should cache and return a film when a record is not present is database', async () => {
     // given
-    await expect((await getFilms()).length).toEqual(0);
-    // and
-    jest.spyOn(starWarsAPI, 'getFilm').mockResolvedValue(_filmData());
+    jest.spyOn(starWarsAPI, 'getFilm').mockResolvedValue(_filmData('3'));
 
     // when
-    const film: FilmDTO = await filmService.getFilm('1');
+    const dto: FilmDTO = await filmService.getFilm('3');
 
     // then
-    await expect((await getFilms()).length).toEqual(1);
+    expect((await getFilms()).length).toEqual(1);
 
-    expect(film.getTitle()).toEqual('A New Hope');
-    expect(film.getEpisodeId()).toEqual('4');
-    expect(film.getOpeningCrawl()).toEqual(
+    expect(dto.getTitle()).toEqual('A New Hope');
+    expect(dto.getEpisodeId()).toEqual('4');
+    expect(dto.getOpeningCrawl()).toEqual(
       "It is a period of civil war.\r\nRebel spaceships, striking\r\nfrom a hidden base, have won\r\ntheir first victory against\r\nthe evil Galactic Empire.\r\n\r\nDuring the battle, Rebel\r\nspies managed to steal secret\r\nplans to the Empire's\r\nultimate weapon, the DEATH\r\nSTAR, an armored space\r\nstation with enough power\r\nto destroy an entire planet.\r\n\r\nPursued by the Empire's\r\nsinister agents, Princess\r\nLeia races home aboard her\r\nstarship, custodian of the\r\nstolen plans that can save her\r\npeople and restore\r\nfreedom to the galaxy....",
     );
-    expect(film.getDirector()).toEqual('George Lucas');
-    expect(film.getProducer()).toEqual('Gary Kurtz, Rick McCallum');
-    expect(film.getReleaseDate()).toEqual('1977-05-25');
-    expect(film.getSpecies().length).toEqual(5);
-    expect(film.getStarships().length).toEqual(8);
-    expect(film.getVehicles().length).toEqual(4);
-    expect(film.getCharacters().length).toEqual(18);
-    expect(film.getPlanets().length).toEqual(3);
-    expect(film.getUrl()).toEqual('https://www.swapi.tech/api/films/1');
+    expect(dto.getDirector()).toEqual('George Lucas');
+    expect(dto.getProducer()).toEqual('Gary Kurtz, Rick McCallum');
+    expect(dto.getReleaseDate()).toEqual('1977-05-25');
+    expect(dto.getSpecies().length).toEqual(5);
+    expect(dto.getStarships().length).toEqual(8);
+    expect(dto.getVehicles().length).toEqual(4);
+    expect(dto.getCharacters().length).toEqual(18);
+    expect(dto.getPlanets().length).toEqual(3);
+    expect(dto.getUrl()).toEqual('https://www.swapi.tech/api/films/1');
   });
-  test('should return cached film when film is not expired and present in database', async () => {});
-  test('should return refreshed film when film is expired and present in database', async () => {});
+
+  test('should return cached film when film is not expired and present in database', async () => {
+    // given
+    await createFilm('4', dayjs().toDate());
+
+    // when
+    const dto: FilmDTO = await filmService.getFilm('4');
+
+    // then
+    expect((await getFilms()).length).toEqual(1);
+
+    expect(dto.getTitle()).toEqual('A New Hope');
+    expect(dto.getEpisodeId()).toEqual('4');
+    expect(dto.getOpeningCrawl()).toEqual(
+      "It is a period of civil war.\r\nRebel spaceships, striking\r\nfrom a hidden base, have won\r\ntheir first victory against\r\nthe evil Galactic Empire.\r\n\r\nDuring the battle, Rebel\r\nspies managed to steal secret\r\nplans to the Empire's\r\nultimate weapon, the DEATH\r\nSTAR, an armored space\r\nstation with enough power\r\nto destroy an entire planet.\r\n\r\nPursued by the Empire's\r\nsinister agents, Princess\r\nLeia races home aboard her\r\nstarship, custodian of the\r\nstolen plans that can save her\r\npeople and restore\r\nfreedom to the galaxy....",
+    );
+    expect(dto.getDirector()).toEqual('George Lucas');
+    expect(dto.getProducer()).toEqual('Gary Kurtz, Rick McCallum');
+    expect(dto.getReleaseDate()).toEqual('1977-05-25');
+    expect(dto.getSpecies().length).toEqual(5);
+    expect(dto.getStarships().length).toEqual(8);
+    expect(dto.getVehicles().length).toEqual(4);
+    expect(dto.getCharacters().length).toEqual(18);
+    expect(dto.getPlanets().length).toEqual(3);
+    expect(dto.getUrl()).toEqual('https://www.swapi.tech/api/films/1');
+  });
+
+  test('should return refreshed film when film is expired and present in database', async () => {
+    // given
+    const cachedAt = dayjs().subtract(25, 'hours').toDate();
+    // and
+    await createFilm('5', cachedAt);
+    // and
+    jest.spyOn(starWarsAPI, 'getFilm');
+
+    // when
+    const dto: FilmDTO = await filmService.getFilm('5');
+
+    // then
+    expect((await getFilms()).length).toEqual(1);
+    expect(starWarsAPI.getFilm).toHaveBeenNthCalledWith(1, '5');
+
+    // new cachedAt date
+    expect(dayjs(dto.getCachedAt()).day).toEqual(dayjs().day);
+    expect(dayjs(dto.getCachedAt()).month).toEqual(dayjs().month);
+    expect(dayjs(dto.getCachedAt()).year).toEqual(dayjs().year);
+  });
 
   const _species = (): string[] => {
     return [
@@ -63,6 +111,7 @@ describe('film integration test', () => {
       'https://www.swapi.tech/api/species/5',
     ];
   };
+
   const _starships = (): string[] => {
     return [
       'https://www.swapi.tech/api/starships/2',
@@ -75,6 +124,7 @@ describe('film integration test', () => {
       'https://www.swapi.tech/api/starships/13',
     ];
   };
+
   const _vehicles = (): string[] => {
     return [
       'https://www.swapi.tech/api/vehicles/4',
@@ -83,6 +133,7 @@ describe('film integration test', () => {
       'https://www.swapi.tech/api/vehicles/8',
     ];
   };
+
   const _characters = (): string[] => {
     return [
       'https://www.swapi.tech/api/people/1',
@@ -105,6 +156,7 @@ describe('film integration test', () => {
       'https://www.swapi.tech/api/people/81',
     ];
   };
+
   const _planets = (): string[] => {
     return [
       'https://www.swapi.tech/api/planets/1',
@@ -113,10 +165,10 @@ describe('film integration test', () => {
     ];
   };
 
-  const _filmData = (): FilmData => {
+  const _filmData = (id: string): FilmData => {
     const filmData: FilmData = new FilmData();
 
-    filmData.setId('1');
+    filmData.setId(id);
     filmData.setTitle('A New Hope');
     filmData.setEpisodeId('4');
     filmData.setOpeningCrawl(
@@ -135,6 +187,37 @@ describe('film integration test', () => {
     filmData.setEditedAt('2024-12-18T15:42:35.839Z');
 
     return filmData;
+  };
+
+  const _film = (id: string): Film => {
+    const film: Film = new Film();
+
+    film.setId(id);
+    film.setTitle('A New Hope');
+    film.setEpisodeId('4');
+    film.setOpeningCrawl(
+      "It is a period of civil war.\r\nRebel spaceships, striking\r\nfrom a hidden base, have won\r\ntheir first victory against\r\nthe evil Galactic Empire.\r\n\r\nDuring the battle, Rebel\r\nspies managed to steal secret\r\nplans to the Empire's\r\nultimate weapon, the DEATH\r\nSTAR, an armored space\r\nstation with enough power\r\nto destroy an entire planet.\r\n\r\nPursued by the Empire's\r\nsinister agents, Princess\r\nLeia races home aboard her\r\nstarship, custodian of the\r\nstolen plans that can save her\r\npeople and restore\r\nfreedom to the galaxy....",
+    );
+    film.setDirector('George Lucas');
+    film.setProducer('Gary Kurtz, Rick McCallum');
+    film.setReleaseDate('1977-05-25');
+    film.setSpecies(_species());
+    film.setStarships(_starships());
+    film.setVehicles(_vehicles());
+    film.setCharacters(_characters());
+    film.setPlanets(_planets());
+    film.setUrl('https://www.swapi.tech/api/films/1');
+    film.setCreatedAt('2024-12-18T15:42:35.839Z');
+    film.setEditedAt('2024-12-18T15:42:35.839Z');
+
+    return film;
+  };
+
+  const createFilm = async (id: string, cacheAt: Date): Promise<Film> => {
+    const film: Film = _film(id);
+    film.setCachedAt(cacheAt);
+
+    return await filmRepository.save(film);
   };
 
   const getFilms = async (): Promise<Film[]> => {
