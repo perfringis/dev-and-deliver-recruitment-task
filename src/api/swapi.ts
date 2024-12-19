@@ -206,27 +206,15 @@ export class StarWarsAPI {
     const planetData: PlanetData = new PlanetData();
 
     planetData.setId(data.uid);
-    planetData.setName(data.properties.name);
-    planetData.setDiameter(data.properties.diameter);
-    planetData.setRotationPeriod(data.properties.rotation_period);
-    planetData.setOrbitalPeriod(data.properties.orbital_period);
-    planetData.setGravity(data.properties.gravity);
-    planetData.setPopulation(data.properties.population);
-    planetData.setClimate(data.properties.climate);
-    planetData.setTerrain(data.properties.terrain);
-    planetData.setSurfaceWater(data.properties.surface_water);
-    planetData.setResidents(data.properties.residents);
-    planetData.setFilms(data.properties.films);
-    planetData.setUrl(data.properties.url);
-    planetData.setCreatedAt(data.properties.created);
-    planetData.setEditedAt(data.properties.edited);
+    planetData.setName(data.name);
+    planetData.setUrl(data.url);
 
     return planetData;
   }
 
   private async toPlanets(planets): Promise<PlanetData[]> {
     return await Promise.all(
-      planets.result.map(async (planet) => this.toPlanet(planet)),
+      planets.results.map(async (planet) => this.toPlanet(planet)),
     );
   }
 
