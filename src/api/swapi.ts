@@ -245,28 +245,15 @@ export class StarWarsAPI {
     const speciesData: SpeciesData = new SpeciesData();
 
     speciesData.setId(data.uid);
-    speciesData.setName(data.properties.name);
-    speciesData.setClassification(data.properties.classification);
-    speciesData.setDesignation(data.properties.designation);
-    speciesData.setAverageHeight(data.properties.average_height);
-    speciesData.setAverageLifespan(data.properties.average_lifespan);
-    speciesData.setEyeColors(data.properties.eye_colors);
-    speciesData.setHairColors(data.properties.hair_colors);
-    speciesData.setSkinColors(data.properties.skin_colors);
-    speciesData.setLanguage(data.properties.language);
-    speciesData.setHomeWorld(data.properties.homeworld);
-    speciesData.setPeople(data.properties.people);
-    speciesData.setFilms(data.properties.films);
-    speciesData.setUrl(data.properties.url);
-    speciesData.setCreatedAt(data.properties.created);
-    speciesData.setEditedAt(data.properties.edited);
+    speciesData.setName(data.name);
+    speciesData.setUrl(data.url);
 
     return speciesData;
   }
 
   private async toSpecies(species): Promise<SpeciesData[]> {
     return await Promise.all(
-      species.result.map(async (kind) => this.toKind(kind)),
+      species.results.map(async (kind) => this.toKind(kind)),
     );
   }
 
