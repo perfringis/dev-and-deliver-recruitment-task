@@ -22,6 +22,28 @@ export class FilmService {
       take: limit,
     });
 
+    if (total === 0) {
+      const films = await this.starWasAPI.getFilms(page, limit);
+
+      const data = await Promise.all(
+        films.map(async (film) => {
+          return await this.getFilm(film.getId());
+        }),
+      );
+
+      return new PageDTO(data, data.length, page, limit);
+    } else if (total > 0 && total < limit) {
+      const films = await this.starWasAPI.getFilms(page, limit);
+
+      const data = await Promise.all(
+        films.map(async (film) => {
+          return await this.getFilm(film.getId());
+        }),
+      );
+
+      return new PageDTO(data, data.length, page, limit);
+    }
+
     return new PageDTO(this.toDTOs(data), total, page, limit);
   }
 
@@ -35,17 +57,6 @@ export class FilmService {
       );
 
       return this.toDTO(created);
-    }
-
-    if (film && film.expired()) {
-      await this.filmRepository.remove(film);
-
-      const filmData: FilmData = await this.starWasAPI.getFilm(id);
-      const updated: Film = await this.filmRepository.save(
-        this.toFilm(filmData),
-      );
-
-      return this.toDTO(updated);
     }
 
     return this.toDTO(film);

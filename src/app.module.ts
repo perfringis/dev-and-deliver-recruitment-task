@@ -41,7 +41,7 @@ import { StarWarsAPI } from './api/swapi';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      logging: true,
+      logging: false,
       entities: [Film, Person, Planet, Species, Starship, Vehicle],
     }),
   ],

@@ -1,5 +1,5 @@
-import { Column, PrimaryColumn } from 'typeorm';
 import * as dayjs from 'dayjs';
+import { BeforeInsert, Column, PrimaryColumn } from 'typeorm';
 
 export class BaseEntity {
   @PrimaryColumn({ name: 'id', type: 'varchar' })
@@ -20,6 +20,12 @@ export class BaseEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   protected cachedAt: Date;
+
+  @Column({
+    name: 'expired_at',
+    type: 'timestamp',
+  })
+  protected expiredAt: Date;
 
   public getId(): string {
     return this.id;
@@ -61,10 +67,17 @@ export class BaseEntity {
     this.cachedAt = value;
   }
 
-  public expired(): boolean {
-    const current = dayjs();
-    const expired = dayjs(this.cachedAt).add(24, 'hours');
+  public getExpiredAt(): Date {
+    return this.expiredAt;
+  }
 
-    return current.isAfter(expired);
+  public setExpiredAt(value: Date) {
+    this.expiredAt = value;
+  }
+
+  @BeforeInsert()
+  setupExpiredAt() {
+    const interval = dayjs().add(24, 'hours').toDate();
+    this.expiredAt = interval;
   }
 }

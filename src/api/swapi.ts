@@ -18,12 +18,14 @@ export class StarWarsAPI {
 
   public async getFilm(id: string): Promise<FilmData> {
     const response = await this.call(`${this.BASE_URL}/films/${id}`);
-    return this.toFilm(response);
+    return this.toFilmData(response);
   }
 
-  public async getFilms(): Promise<FilmData[]> {
-    const response = await this.call(`${this.BASE_URL}/films?page=1&limit=6`);
-    return this.toFilms(response);
+  public async getFilms(page: number, limit: number): Promise<FilmData[]> {
+    const response = await this.call(
+      `${this.BASE_URL}/films?page=${page}&limit=${limit}`,
+    );
+    return await this.toFilms(response);
   }
 
   public async getPerson(id: string): Promise<PersonData> {
@@ -84,7 +86,7 @@ export class StarWarsAPI {
     return this.toVehicles(response);
   }
 
-  private toFilm(data): FilmData {
+  private toFilmData(data): FilmData {
     const filmData: FilmData = new FilmData();
 
     filmData.setId(data.result.uid);
@@ -106,8 +108,32 @@ export class StarWarsAPI {
     return filmData;
   }
 
-  private toFilms(data): FilmData[] {
-    return data.result.map((data) => this.toFilm(data));
+  private toFilm(data): FilmData {
+    const filmData: FilmData = new FilmData();
+
+    filmData.setId(data.uid);
+    filmData.setTitle(data.properties.title);
+    filmData.setEpisodeId(data.properties.episode_id);
+    filmData.setOpeningCrawl(data.properties.opening_crawl);
+    filmData.setDirector(data.properties.director);
+    filmData.setProducer(data.properties.producer);
+    filmData.setReleaseDate(data.properties.release_date);
+    filmData.setSpecies(data.properties.species);
+    filmData.setStarships(data.properties.starships);
+    filmData.setVehicles(data.properties.vehicles);
+    filmData.setCharacters(data.properties.characters);
+    filmData.setPlanets(data.properties.planets);
+    filmData.setUrl(data.properties.url);
+    filmData.setCreatedAt(data.properties.created);
+    filmData.setEditedAt(data.properties.edited);
+
+    return filmData;
+  }
+
+  private async toFilms(films): Promise<FilmData[]> {
+    return await Promise.all(
+      films.result.map(async (film) => this.toFilm(film)),
+    );
   }
 
   private toPerson(data): PersonData {
