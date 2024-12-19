@@ -331,29 +331,15 @@ export class StarWarsAPI {
     const vehicleData: VehicleData = new VehicleData();
 
     vehicleData.setId(data.uid);
-    vehicleData.setName(data.properties.name);
-    vehicleData.setModel(data.properties.model);
-    vehicleData.setVehicleClass(data.properties.vehicle_class);
-    vehicleData.setManufacturer(data.properties.manufacturer);
-    vehicleData.setLength(data.properties.length);
-    vehicleData.setCostInCredits(data.properties.cost_in_credits);
-    vehicleData.setCrew(data.properties.crew);
-    vehicleData.setPassengers(data.properties.passengers);
-    vehicleData.setMaxAtmospheringSpeed(data.properties.max_atmosphering_speed);
-    vehicleData.setCargoCapacity(data.properties.cargo_capacity);
-    vehicleData.setConsumables(data.properties.consumables);
-    vehicleData.setFilms(data.properties.films);
-    vehicleData.setPilots(data.properties.pilots);
-    vehicleData.setUrl(data.properties.url);
-    vehicleData.setCreatedAt(data.properties.created);
-    vehicleData.setEditedAt(data.properties.edited);
+    vehicleData.setName(data.name);
+    vehicleData.setUrl(data.url);
 
     return vehicleData;
   }
 
   private async toVehicles(vehicles): Promise<VehicleData[]> {
     return await Promise.all(
-      vehicles.result.map(async (vehicle) => this.toVehicle(vehicle)),
+      vehicles.results.map(async (vehicle) => this.toVehicle(vehicle)),
     );
   }
 
