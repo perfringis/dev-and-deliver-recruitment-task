@@ -30,60 +30,68 @@ export class StarWarsAPI {
 
   public async getPerson(id: string): Promise<PersonData> {
     const response = await this.call(`${this.BASE_URL}/people/${id}`);
-    return this.toPerson(response);
+    return this.toPersonData(response);
   }
 
-  public async getPeople(): Promise<PersonData[]> {
-    const response = await this.call(`${this.BASE_URL}/people?page=1&limit=82`);
-    return this.toPeople(response);
+  public async getPeople(page: number, limit: number): Promise<PersonData[]> {
+    const response = await this.call(
+      `${this.BASE_URL}/people?page=${page}&limit=${limit}`,
+    );
+    return await this.toPeople(response);
   }
 
   public async getPlanet(id: string): Promise<PlanetData> {
     const response = await this.call(`${this.BASE_URL}/planets/${id}`);
-    return this.toPlanet(response);
+    return this.toPlanetData(response);
   }
 
-  public async getPlanets(): Promise<PlanetData[]> {
+  public async getPlanets(page: number, limit: number): Promise<PlanetData[]> {
     const response = await this.call(
-      `${this.BASE_URL}/planets?page=1&limit=60`,
+      `${this.BASE_URL}/planets?page=${page}&limit=${limit}`,
     );
-    return this.toPlanets(response);
+    return await this.toPlanets(response);
   }
 
   public async getKind(id: string): Promise<SpeciesData> {
     const response = await this.call(`${this.BASE_URL}/species/${id}`);
-    return this.toKind(response);
+    return this.toKindData(response);
   }
 
-  public async getSpecies(): Promise<SpeciesData[]> {
+  public async getSpecies(page: number, limit: number): Promise<SpeciesData[]> {
     const response = await this.call(
-      `${this.BASE_URL}/species?page=1&limit=37`,
+      `${this.BASE_URL}/species?page=${page}&limit=${limit}`,
     );
-    return this.toSpecies(response);
+    return await this.toSpecies(response);
   }
 
   public async getStarShip(id: string): Promise<StarshipData> {
     const response = await this.call(`${this.BASE_URL}/starships/${id}`);
-    return this.toStarship(response);
+    return this.toStarshipData(response);
   }
 
-  public async getStarShips(): Promise<StarshipData[]> {
+  public async getStarShips(
+    page: number,
+    limit: number,
+  ): Promise<StarshipData[]> {
     const response = await this.call(
-      `${this.BASE_URL}/starships?page=1&limit=36`,
+      `${this.BASE_URL}/starships?page=${page}&limit=${limit}`,
     );
-    return this.toStarships(response);
+    return await this.toStarships(response);
   }
 
   public async getVehicle(id: string): Promise<VehicleData> {
     const response = await this.call(`${this.BASE_URL}/vehicles/${id}`);
-    return this.toVehicle(response);
+    return this.toVehicleData(response);
   }
 
-  public async getVehicles(): Promise<VehicleData[]> {
+  public async getVehicles(
+    page: number,
+    limit: number,
+  ): Promise<VehicleData[]> {
     const response = await this.call(
-      `${this.BASE_URL}/vehicles?page=1&limit=39`,
+      `${this.BASE_URL}/vehicles?page=${page}&limit=${limit}`,
     );
-    return this.toVehicles(response);
+    return await this.toVehicles(response);
   }
 
   private toFilmData(data): FilmData {
@@ -136,7 +144,7 @@ export class StarWarsAPI {
     );
   }
 
-  private toPerson(data): PersonData {
+  private toPersonData(data): PersonData {
     const personData: PersonData = new PersonData();
 
     personData.setId(data.result.uid);
@@ -160,11 +168,37 @@ export class StarWarsAPI {
     return personData;
   }
 
-  private toPeople(data): PersonData[] {
-    return data.result.map((data) => this.toPerson(data));
+  private toPerson(data): PersonData {
+    const personData: PersonData = new PersonData();
+
+    personData.setId(data.uid);
+    personData.setName(data.properties.name);
+    personData.setBirthYear(data.properties.birth_year);
+    personData.setEyeColor(data.properties.eye_color);
+    personData.setGender(data.properties.gender);
+    personData.setHairColor(data.properties.hair_color);
+    personData.setHeight(data.properties.height);
+    personData.setMass(data.properties.mass);
+    personData.setSkinColor(data.properties.skin_color);
+    personData.setHomeWorld(data.properties.homeworld);
+    personData.setFilms(data.properties.films);
+    personData.setSpecies(data.properties.species);
+    personData.setStarships(data.properties.starships);
+    personData.setVehicles(data.properties.vehicles);
+    personData.setUrl(data.properties.url);
+    personData.setCreatedAt(data.properties.created);
+    personData.setEditedAt(data.properties.edited);
+
+    return personData;
   }
 
-  private toPlanet(data): PlanetData {
+  private async toPeople(people): Promise<PersonData[]> {
+    return await Promise.all(
+      people.result.map(async (person) => this.toPerson(person)),
+    );
+  }
+
+  private toPlanetData(data): PlanetData {
     const planetData: PlanetData = new PlanetData();
 
     planetData.setId(data.result.uid);
@@ -186,11 +220,35 @@ export class StarWarsAPI {
     return planetData;
   }
 
-  private toPlanets(data): PlanetData[] {
-    return data.result.map((data) => this.toPlanet(data));
+  private toPlanet(data): PlanetData {
+    const planetData: PlanetData = new PlanetData();
+
+    planetData.setId(data.uid);
+    planetData.setName(data.properties.name);
+    planetData.setDiameter(data.properties.diameter);
+    planetData.setRotationPeriod(data.properties.rotation_period);
+    planetData.setOrbitalPeriod(data.properties.orbital_period);
+    planetData.setGravity(data.properties.gravity);
+    planetData.setPopulation(data.properties.population);
+    planetData.setClimate(data.properties.climate);
+    planetData.setTerrain(data.properties.terrain);
+    planetData.setSurfaceWater(data.properties.surface_water);
+    planetData.setResidents(data.properties.residents);
+    planetData.setFilms(data.properties.films);
+    planetData.setUrl(data.properties.url);
+    planetData.setCreatedAt(data.properties.created);
+    planetData.setEditedAt(data.properties.edited);
+
+    return planetData;
   }
 
-  private toKind(data): SpeciesData {
+  private async toPlanets(planets): Promise<PlanetData[]> {
+    return await Promise.all(
+      planets.result.map(async (planet) => this.toPlanet(planet)),
+    );
+  }
+
+  private toKindData(data): SpeciesData {
     const speciesData: SpeciesData = new SpeciesData();
 
     speciesData.setId(data.result.uid);
@@ -213,11 +271,36 @@ export class StarWarsAPI {
     return speciesData;
   }
 
-  private toSpecies(data): SpeciesData[] {
-    return data.result.map((data) => this.toKind(data));
+  private toKind(data): SpeciesData {
+    const speciesData: SpeciesData = new SpeciesData();
+
+    speciesData.setId(data.uid);
+    speciesData.setName(data.properties.name);
+    speciesData.setClassification(data.properties.classification);
+    speciesData.setDesignation(data.properties.designation);
+    speciesData.setAverageHeight(data.properties.average_height);
+    speciesData.setAverageLifespan(data.properties.average_lifespan);
+    speciesData.setEyeColors(data.properties.eye_colors);
+    speciesData.setHairColors(data.properties.hair_colors);
+    speciesData.setSkinColors(data.properties.skin_colors);
+    speciesData.setLanguage(data.properties.language);
+    speciesData.setHomeWorld(data.properties.homeworld);
+    speciesData.setPeople(data.properties.people);
+    speciesData.setFilms(data.properties.films);
+    speciesData.setUrl(data.properties.url);
+    speciesData.setCreatedAt(data.properties.created);
+    speciesData.setEditedAt(data.properties.edited);
+
+    return speciesData;
   }
 
-  private toStarship(data): StarshipData {
+  private async toSpecies(species): Promise<SpeciesData[]> {
+    return await Promise.all(
+      species.result.map(async (kind) => this.toKind(kind)),
+    );
+  }
+
+  private toStarshipData(data): StarshipData {
     const starshipData: StarshipData = new StarshipData();
 
     starshipData.setId(data.result.uid);
@@ -245,11 +328,41 @@ export class StarWarsAPI {
     return starshipData;
   }
 
-  private toStarships(data): StarshipData[] {
-    return data.result.map((data) => this.toStarship(data));
+  private toStarship(data): StarshipData {
+    const starshipData: StarshipData = new StarshipData();
+
+    starshipData.setId(data.uid);
+    starshipData.setName(data.properties.name);
+    starshipData.setModel(data.properties.model);
+    starshipData.setStarshipClass(data.properties.starship_class);
+    starshipData.setManufacturer(data.properties.manufacturer);
+    starshipData.setCostInCredits(data.properties.cost_in_credits);
+    starshipData.setLength(data.properties.length);
+    starshipData.setCrew(data.properties.crew);
+    starshipData.setPassengers(data.properties.passengers);
+    starshipData.setMaxAtmospheringSpeed(
+      data.properties.max_atmosphering_speed,
+    );
+    starshipData.setHyperDriveRating(data.properties.hyperdrive_rating);
+    starshipData.setMglt(data.properties.MGLT);
+    starshipData.setCargoCapacity(data.properties.cargo_capacity);
+    starshipData.setConsumables(data.properties.consumables);
+    starshipData.setFilms(data.properties.films);
+    starshipData.setPilots(data.properties.pilots);
+    starshipData.setUrl(data.properties.url);
+    starshipData.setCreatedAt(data.properties.created);
+    starshipData.setEditedAt(data.properties.edited);
+
+    return starshipData;
   }
 
-  private toVehicle(data): VehicleData {
+  private async toStarships(starships): Promise<StarshipData[]> {
+    return await Promise.all(
+      starships.result.map(async (starship) => this.toStarship(starship)),
+    );
+  }
+
+  private toVehicleData(data): VehicleData {
     const vehicleData: VehicleData = new VehicleData();
 
     vehicleData.setId(data.result.uid);
@@ -275,8 +388,34 @@ export class StarWarsAPI {
     return vehicleData;
   }
 
-  private toVehicles(data): VehicleData[] {
-    return data.result.map((data) => this.toVehicle(data));
+  private toVehicle(data): VehicleData {
+    const vehicleData: VehicleData = new VehicleData();
+
+    vehicleData.setId(data.uid);
+    vehicleData.setName(data.properties.name);
+    vehicleData.setModel(data.properties.model);
+    vehicleData.setVehicleClass(data.properties.vehicle_class);
+    vehicleData.setManufacturer(data.properties.manufacturer);
+    vehicleData.setLength(data.properties.length);
+    vehicleData.setCostInCredits(data.properties.cost_in_credits);
+    vehicleData.setCrew(data.properties.crew);
+    vehicleData.setPassengers(data.properties.passengers);
+    vehicleData.setMaxAtmospheringSpeed(data.properties.max_atmosphering_speed);
+    vehicleData.setCargoCapacity(data.properties.cargo_capacity);
+    vehicleData.setConsumables(data.properties.consumables);
+    vehicleData.setFilms(data.properties.films);
+    vehicleData.setPilots(data.properties.pilots);
+    vehicleData.setUrl(data.properties.url);
+    vehicleData.setCreatedAt(data.properties.created);
+    vehicleData.setEditedAt(data.properties.edited);
+
+    return vehicleData;
+  }
+
+  private async toVehicles(vehicles): Promise<VehicleData[]> {
+    return await Promise.all(
+      vehicles.result.map(async (vehicle) => this.toVehicle(vehicle)),
+    );
   }
 
   private async call(url: string): Promise<any> {
