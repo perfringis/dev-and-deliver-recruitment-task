@@ -17,34 +17,40 @@ export class PersonService {
     page: number,
     limit: number,
   ): Promise<PageDTO<PersonDTO[]>> {
-    const [data, total] = await this.personRepository.findAndCount({
+    const [peopleDB, total] = await this.personRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
 
-    if (total === 0) {
-      const people = await this.starWarsAPI.getPeople(page, limit);
+    if (!total) {
+      const peopleAPI = await this.starWarsAPI.getPeople(page, limit);
 
       const data = await Promise.all(
-        people.map(async (person) => {
-          return await this.getPerson(person.getId());
-        }),
-      );
-
-      return new PageDTO(data, data.length, page, limit);
-    } else if (total > 0 && total < limit) {
-      const people = await this.starWarsAPI.getPeople(page, limit);
-
-      const data = await Promise.all(
-        people.map(async (person) => {
-          return await this.getPerson(person.getId());
+        peopleAPI.map(async (personAPI) => {
+          return await this.getPerson(personAPI.getId());
         }),
       );
 
       return new PageDTO(data, data.length, page, limit);
     }
 
-    return new PageDTO(this.toDTOs(data), total, page, limit);
+    if (total >= limit) {
+      return new PageDTO(this.toDTOs(peopleDB), peopleDB.length, page, limit);
+    }
+
+    if (total < limit) {
+      const peopleAPI = await this.starWarsAPI.getPeople(page, limit);
+
+      const missingPeople = await this.removeRedundant(peopleAPI, peopleDB);
+
+      const data = await Promise.all(
+        missingPeople.map(async (person) => {
+          return await this.getPerson(person.getId());
+        }),
+      );
+
+      return new PageDTO(data, data.length, page, limit);
+    }
   }
 
   public async getPerson(id: string): Promise<PersonDTO> {
@@ -88,5 +94,14 @@ export class PersonService {
     person.setEditedAt(personData.getEditedAt());
 
     return person;
+  }
+
+  private async removeRedundant(peopleAPI: PersonData[], peopleDB: Person[]) {
+    return await Promise.all(
+      peopleAPI.filter(
+        async (personAPI) =>
+          !peopleDB.some((personDB) => personDB.getId() === personAPI.getId()),
+      ),
+    );
   }
 }
