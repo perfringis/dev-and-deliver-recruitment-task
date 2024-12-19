@@ -8,7 +8,7 @@ import { FilmDTO } from 'src/dto/film.dto';
 import { PageDTO } from 'src/dto/page.dto';
 import { NotFoundException } from '@nestjs/common';
 
-describe('film integration test', () => {
+describe('FilmServiceTest', () => {
   let filmRepository: FilmRepository;
   let filmService: FilmService;
   let starWarsAPI: StarWarsAPI;

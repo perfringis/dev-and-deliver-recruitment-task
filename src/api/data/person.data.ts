@@ -9,10 +9,6 @@ export class PersonData {
   private mass: string;
   private skinColor: string;
   private homeWorld: string;
-  private films: string[];
-  private species: string[];
-  private starships: string[];
-  private vehicles: string[];
   private url: string;
   private createdAt: string;
   private editedAt: string;
@@ -95,38 +91,6 @@ export class PersonData {
 
   public setHomeWorld(value: string) {
     this.homeWorld = value;
-  }
-
-  public getFilms(): string[] {
-    return this.films;
-  }
-
-  public setFilms(value: string[]) {
-    this.films = value;
-  }
-
-  public getSpecies(): string[] {
-    return this.species;
-  }
-
-  public setSpecies(value: string[]) {
-    this.species = value;
-  }
-
-  public getStarships(): string[] {
-    return this.starships;
-  }
-
-  public setStarships(value: string[]) {
-    this.starships = value;
-  }
-
-  public getVehicles(): string[] {
-    return this.vehicles;
-  }
-
-  public setVehicles(value: string[]) {
-    this.vehicles = value;
   }
 
   public getUrl(): string {

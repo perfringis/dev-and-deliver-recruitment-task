@@ -157,10 +157,6 @@ export class StarWarsAPI {
     personData.setMass(data.result.properties.mass);
     personData.setSkinColor(data.result.properties.skin_color);
     personData.setHomeWorld(data.result.properties.homeworld);
-    personData.setFilms(data.result.properties.films);
-    personData.setSpecies(data.result.properties.species);
-    personData.setStarships(data.result.properties.starships);
-    personData.setVehicles(data.result.properties.vehicles);
     personData.setUrl(data.result.properties.url);
     personData.setCreatedAt(data.result.properties.created);
     personData.setEditedAt(data.result.properties.edited);
@@ -172,29 +168,15 @@ export class StarWarsAPI {
     const personData: PersonData = new PersonData();
 
     personData.setId(data.uid);
-    personData.setName(data.properties.name);
-    personData.setBirthYear(data.properties.birth_year);
-    personData.setEyeColor(data.properties.eye_color);
-    personData.setGender(data.properties.gender);
-    personData.setHairColor(data.properties.hair_color);
-    personData.setHeight(data.properties.height);
-    personData.setMass(data.properties.mass);
-    personData.setSkinColor(data.properties.skin_color);
-    personData.setHomeWorld(data.properties.homeworld);
-    personData.setFilms(data.properties.films);
-    personData.setSpecies(data.properties.species);
-    personData.setStarships(data.properties.starships);
-    personData.setVehicles(data.properties.vehicles);
-    personData.setUrl(data.properties.url);
-    personData.setCreatedAt(data.properties.created);
-    personData.setEditedAt(data.properties.edited);
+    personData.setName(data.name);
+    personData.setUrl(data.url);
 
     return personData;
   }
 
   private async toPeople(people): Promise<PersonData[]> {
     return await Promise.all(
-      people.result.map(async (person) => this.toPerson(person)),
+      people.results.map(async (person) => this.toPerson(person)),
     );
   }
 

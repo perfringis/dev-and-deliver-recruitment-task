@@ -10,7 +10,7 @@ import { FilmData } from 'src/api/data/film.data';
 export class FilmService {
   constructor(
     private readonly filmRepository: FilmRepository,
-    private readonly starWasAPI: StarWarsAPI,
+    private readonly starWarsAPI: StarWarsAPI,
   ) {}
 
   public async getFilms(
@@ -23,7 +23,7 @@ export class FilmService {
     });
 
     if (total === 0) {
-      const films = await this.starWasAPI.getFilms(page, limit);
+      const films = await this.starWarsAPI.getFilms(page, limit);
 
       const data = await Promise.all(
         films.map(async (film) => {
@@ -33,7 +33,7 @@ export class FilmService {
 
       return new PageDTO(data, data.length, page, limit);
     } else if (total > 0 && total < limit) {
-      const films = await this.starWasAPI.getFilms(page, limit);
+      const films = await this.starWarsAPI.getFilms(page, limit);
 
       const data = await Promise.all(
         films.map(async (film) => {
@@ -51,7 +51,7 @@ export class FilmService {
     const film: Film = await this.filmRepository.findById(id);
 
     if (!film) {
-      const filmData: FilmData = await this.starWasAPI.getFilm(id);
+      const filmData: FilmData = await this.starWarsAPI.getFilm(id);
       const created: Film = await this.filmRepository.save(
         this.toFilm(filmData),
       );
