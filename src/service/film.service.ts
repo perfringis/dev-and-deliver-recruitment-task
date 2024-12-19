@@ -17,34 +17,38 @@ export class FilmService {
     page: number,
     limit: number,
   ): Promise<PageDTO<FilmDTO[]>> {
-    const [data, total] = await this.filmRepository.findAndCount({
+    const [filmsDB, total] = await this.filmRepository.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
 
-    if (total === 0) {
-      const films = await this.starWarsAPI.getFilms(page, limit);
+    if (!total) {
+      const filmsAPI = await this.starWarsAPI.getFilms(page, limit);
 
       const data = await Promise.all(
-        films.map(async (film) => {
-          return await this.getFilm(film.getId());
-        }),
-      );
-
-      return new PageDTO(data, data.length, page, limit);
-    } else if (total > 0 && total < limit) {
-      const films = await this.starWarsAPI.getFilms(page, limit);
-
-      const data = await Promise.all(
-        films.map(async (film) => {
-          return await this.getFilm(film.getId());
+        filmsAPI.map(async (filmAPI) => {
+          return await this.getFilm(filmAPI.getId());
         }),
       );
 
       return new PageDTO(data, data.length, page, limit);
     }
 
-    return new PageDTO(this.toDTOs(data), total, page, limit);
+    if (total >= limit) {
+      return new PageDTO(this.toDTOs(filmsDB), filmsDB.length, page, limit);
+    }
+
+    if (total < limit) {
+      const filmsAPI = await this.starWarsAPI.getFilms(page, limit);
+
+      const data = await Promise.all(
+        filmsAPI.map(async (filmAPI) => {
+          return await this.getFilm(filmAPI.getId());
+        }),
+      );
+
+      return new PageDTO(data, data.length, page, limit);
+    }
   }
 
   public async getFilm(id: string): Promise<FilmDTO> {
