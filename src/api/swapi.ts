@@ -289,33 +289,15 @@ export class StarWarsAPI {
     const starshipData: StarshipData = new StarshipData();
 
     starshipData.setId(data.uid);
-    starshipData.setName(data.properties.name);
-    starshipData.setModel(data.properties.model);
-    starshipData.setStarshipClass(data.properties.starship_class);
-    starshipData.setManufacturer(data.properties.manufacturer);
-    starshipData.setCostInCredits(data.properties.cost_in_credits);
-    starshipData.setLength(data.properties.length);
-    starshipData.setCrew(data.properties.crew);
-    starshipData.setPassengers(data.properties.passengers);
-    starshipData.setMaxAtmospheringSpeed(
-      data.properties.max_atmosphering_speed,
-    );
-    starshipData.setHyperDriveRating(data.properties.hyperdrive_rating);
-    starshipData.setMglt(data.properties.MGLT);
-    starshipData.setCargoCapacity(data.properties.cargo_capacity);
-    starshipData.setConsumables(data.properties.consumables);
-    starshipData.setFilms(data.properties.films);
-    starshipData.setPilots(data.properties.pilots);
-    starshipData.setUrl(data.properties.url);
-    starshipData.setCreatedAt(data.properties.created);
-    starshipData.setEditedAt(data.properties.edited);
+    starshipData.setName(data.name);
+    starshipData.setUrl(data.url);
 
     return starshipData;
   }
 
   private async toStarships(starships): Promise<StarshipData[]> {
     return await Promise.all(
-      starships.result.map(async (starship) => this.toStarship(starship)),
+      starships.results.map(async (starship) => this.toStarship(starship)),
     );
   }
 
