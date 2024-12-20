@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { FilmRepository } from '../repository/film.repository';
 import { PersonRepository } from '../repository/person.repository';
+import { MostFrequentCharactersDTO } from '../dto/most.frequent.characters.dto';
 
 @Injectable()
 export class CharacterService {
@@ -9,14 +10,14 @@ export class CharacterService {
     private readonly personRepository: PersonRepository,
   ) {}
 
-  public async getMostFrequent() {
+  public async getMostFrequent(): Promise<MostFrequentCharactersDTO> {
     const [films, people] = await Promise.all([
       this.filmRepository.find({}),
       this.personRepository.find({}),
     ]);
 
     if (!films.length || !people.length) {
-      return { mostFrequentCharacters: [], count: 0 };
+      return new MostFrequentCharactersDTO([], 0);
     }
 
     const openingCrawlText = films
@@ -44,6 +45,6 @@ export class CharacterService {
       .filter(([_, count]) => count === maxCount)
       .map(([name]) => name);
 
-    return { mostFrequentCharacters, count: maxCount };
+    return new MostFrequentCharactersDTO(mostFrequentCharacters, maxCount);
   }
 }
