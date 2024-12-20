@@ -50,7 +50,7 @@ git clone git@github.com:perfringis/dev-and-deliver-recruitment-task.git
 2. Run docker configuration:
 
 ```sh
-docker-compose -f docker-compose.yml up
+docker compose -f docker-compose.yml up
 ```
 
 ## Swagger documentation
