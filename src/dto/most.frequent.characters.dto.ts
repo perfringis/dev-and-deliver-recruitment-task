@@ -1,9 +1,9 @@
 export class MostFrequentCharactersDTO {
-  mostFrequentCharacters: string[];
-  count: number;
+  public characters: string[];
+  public count: number;
 
-  constructor(mostFrequentCharacters: string[], count: number) {
-    this.mostFrequentCharacters = mostFrequentCharacters;
+  constructor(characters: string[], count: number) {
+    this.characters = characters;
     this.count = count;
   }
 }
