@@ -26,6 +26,10 @@ import { SpeciesController } from './controller/species.controller';
 import { StarshipController } from './controller/starship.controller';
 import { VehicleController } from './controller/vehicle.controller';
 import { StarWarsAPI } from './api/swapi';
+import { CharacterController } from './controller/character.controller';
+import { WordController } from './controller/word.controller';
+import { CharacterService } from './service/character.service';
+import { WordService } from './service/word.service';
 
 @Module({
   imports: [
@@ -52,6 +56,8 @@ import { StarWarsAPI } from './api/swapi';
     SpeciesController,
     StarshipController,
     VehicleController,
+    CharacterController,
+    WordController,
   ],
   providers: [
     // repositories
@@ -69,6 +75,8 @@ import { StarWarsAPI } from './api/swapi';
     SpeciesService,
     StarshipService,
     VehicleService,
+    CharacterService,
+    WordService,
 
     // api
     StarWarsAPI,
