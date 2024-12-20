@@ -36,7 +36,7 @@ import { WordService } from './service/word.service';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '127.0.0.1',
+      host: process.env.DATABASE_HOST || '127.0.0.1',
       port: process.env.DATABASE_PORT
         ? parseInt(process.env.DATABASE_PORT, 10)
         : 5432,
