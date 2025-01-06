@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../../src/app.module';
-import { CharacterService } from '../../src/service/character.service';
 import { Film } from 'src/film/film.entity';
 import { FilmRepository } from 'src/film/film.repository';
 import { Person } from 'src/person/person.entity';
 import { PersonRepository } from 'src/person/person.repository';
+import { CharacterService } from 'src/character/character.service';
 
 describe('CharacterServiceTest', () => {
   let filmRepository: FilmRepository;
