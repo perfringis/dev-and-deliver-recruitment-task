@@ -6,6 +6,7 @@
 - [Docker setup](#docker-setup)
 - [Swagger documentation](#swagger-documentation)
 - [Tests](#tests)
+- [Dev and deliver feedback](#dev-and-delver-feedback)
 
 ## Setup locally
 
@@ -64,3 +65,9 @@ Run tests by:
 ```sh
 pnpm test
 ```
+
+## dev and deliver feedback
+
+> In docker-compose.yml, you can use environment variables, including those from a dotenv file. This allows you to avoid storing, for example, database credentials in two places (separately in docker-compose.yml and .env) by using environment variables directly in docker-compose.yml. https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/
+
+Done
