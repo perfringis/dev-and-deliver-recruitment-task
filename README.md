@@ -76,10 +76,13 @@ Done
 
 Add my insights later.
 
->  Swagger w porządku.
+> Swagger is fine.
 
 Add my insights later.
 
 > The application lacks security measures, such as CORS. It's worth considering these aspects when developing both web applications and APIs. https://docs.nestjs.com/security/cors https://docs.nestjs.com/security/helmet
 
 Added CORS config and HELMET lib.
+
+> "Lack of division of the application into modules. All dependencies are placed directly into the main module." https://docs.nestjs.com/modules
+

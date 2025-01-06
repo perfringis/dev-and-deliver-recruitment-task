@@ -1,35 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Film } from './entity/film.entity';
-import { Person } from './entity/person.entity';
-import { Planet } from './entity/planet.entity';
-import { Species } from './entity/species.entity';
-import { Starship } from './entity/starship.entity';
-import { Vehicle } from './entity/vehicle.entity';
-import { FilmController } from './controller/film.controller';
-import { FilmService } from './service/film.service';
-import { FilmRepository } from './repository/film.repository';
-import { PersonRepository } from './repository/person.repository';
-import { PlanetRepository } from './repository/planet.repository';
-import { SpeciesRepository } from './repository/species.repository';
-import { StarshipRepository } from './repository/starship.repository';
-import { VehicleRepository } from './repository/vehicle.repository';
-import { PersonService } from './service/person.service';
-import { PlanetService } from './service/planet.service';
-import { SpeciesService } from './service/species.service';
-import { StarshipService } from './service/starship.service';
-import { VehicleService } from './service/vehicle.service';
-import { PersonController } from './controller/person.controller';
-import { PlanetController } from './controller/planet.controller';
-import { SpeciesController } from './controller/species.controller';
-import { StarshipController } from './controller/starship.controller';
-import { VehicleController } from './controller/vehicle.controller';
-import { StarWarsAPI } from './api/swapi';
-import { CharacterController } from './controller/character.controller';
-import { WordController } from './controller/word.controller';
-import { CharacterService } from './service/character.service';
-import { WordService } from './service/word.service';
+import { FilmModule } from './film/film.module';
+import { PersonModule } from './person/person.module';
+import { PlanetModule } from './planet/planet.module';
+import { SpeciesModule } from './species/species.module';
+import { StarshipModule } from './starship/starship.module';
+import { VehicleModule } from './vehicle/vehicle.module';
+import { Film } from './film/film.entity';
+import { Person } from './person/person.entity';
+import { Planet } from './planet/planet.entity';
+import { Species } from './species/species.entity';
+import { Starship } from './starship/starship.entity';
+import { Vehicle } from './vehicle/vehicle.entity';
+import { WordModule } from './word/word.module';
+import { CharacterModule } from './character/character.module';
 
 @Module({
   imports: [
@@ -48,38 +33,14 @@ import { WordService } from './service/word.service';
       logging: false,
       entities: [Film, Person, Planet, Species, Starship, Vehicle],
     }),
-  ],
-  controllers: [
-    FilmController,
-    PersonController,
-    PlanetController,
-    SpeciesController,
-    StarshipController,
-    VehicleController,
-    CharacterController,
-    WordController,
-  ],
-  providers: [
-    // repositories
-    FilmRepository,
-    PersonRepository,
-    PlanetRepository,
-    SpeciesRepository,
-    StarshipRepository,
-    VehicleRepository,
-
-    // services
-    FilmService,
-    PersonService,
-    PlanetService,
-    SpeciesService,
-    StarshipService,
-    VehicleService,
-    CharacterService,
-    WordService,
-
-    // api
-    StarWarsAPI,
+    FilmModule,
+    PersonModule,
+    PlanetModule,
+    SpeciesModule,
+    StarshipModule,
+    VehicleModule,
+    WordModule,
+    CharacterModule,
   ],
 })
 export class AppModule {}

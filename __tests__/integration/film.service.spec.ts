@@ -1,12 +1,12 @@
 import { AppModule } from 'src/app.module';
 import { Test } from '@nestjs/testing';
-import { FilmService } from 'src/service/film.service';
 import { StarWarsAPI } from 'src/api/swapi';
-import { FilmRepository } from 'src/repository/film.repository';
-import { Film } from 'src/entity/film.entity';
-import { FilmDTO } from 'src/dto/film.dto';
 import { PageDTO } from 'src/dto/page.dto';
 import { NotFoundException } from '@nestjs/common';
+import { FilmRepository } from 'src/film/film.repository';
+import { Film } from 'src/film/film.entity';
+import { FilmDTO } from 'src/film/film.dto';
+import { FilmService } from 'src/film/film.service';
 
 describe('FilmServiceTest', () => {
   let filmRepository: FilmRepository;

@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../../src/app.module';
-import { FilmRepository } from '../../src/repository/film.repository';
 import { WordService } from '../../src/service/word.service';
-import { Film } from '../../src/entity/film.entity';
+import { FilmRepository } from 'src/film/film.repository';
+import { Film } from 'src/film/film.entity';
 
 describe('WordServiceTest', () => {
   let filmRepository: FilmRepository;
