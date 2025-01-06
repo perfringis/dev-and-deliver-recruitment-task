@@ -71,3 +71,15 @@ pnpm test
 > In docker-compose.yml, you can use environment variables, including those from a dotenv file. This allows you to avoid storing, for example, database credentials in two places (separately in docker-compose.yml and .env) by using environment variables directly in docker-compose.yml. https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/
 
 Done
+
+> Integration tests fine.
+
+Add my insights later.
+
+>  Swagger w porządku.
+
+Add my insights later.
+
+> The application lacks security measures, such as CORS. It's worth considering these aspects when developing both web applications and APIs. https://docs.nestjs.com/security/cors https://docs.nestjs.com/security/helmet
+
+Added CORS config and HELMET lib.
