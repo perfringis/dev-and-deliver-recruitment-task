@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { StarWarsAPI } from 'src/api/swapi';
-import { SpeciesController } from './species.controller';
-import { SpeciesService } from './species.service';
-import { SpeciesRepository } from './species.repository';
+import { StarWarsAPI } from 'src/swapi/swapi';
+import { SpeciesController } from './controller/species.controller';
+import { SpeciesService } from './service/species.service';
+import { SpeciesRepository } from './repository/species.repository';
 
 @Module({
   imports: [],

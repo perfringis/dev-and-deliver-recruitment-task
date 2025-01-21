@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { StarWarsAPI } from 'src/api/swapi';
-import { StarshipController } from './starship.controller';
-import { StarshipRepository } from './starship.repository';
-import { StarshipService } from './starship.service';
+import { StarWarsAPI } from 'src/swapi/swapi';
+import { StarshipController } from './controller/starship.controller';
+import { StarshipRepository } from './repository/starship.repository';
+import { StarshipService } from './service/starship.service';
 
 @Module({
   imports: [],

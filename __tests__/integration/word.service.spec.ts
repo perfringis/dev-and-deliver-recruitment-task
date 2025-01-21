@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from '../../src/app.module';
 import { FilmRepository } from 'src/film/film.repository';
 import { Film } from 'src/film/film.entity';
-import { WordService } from 'src/word/word.service';
+import { WordService } from 'src/word/service/word.service';
 
 describe('WordServiceTest', () => {
   let filmRepository: FilmRepository;

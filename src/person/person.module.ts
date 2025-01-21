@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { StarWarsAPI } from 'src/api/swapi';
-import { PersonController } from './person.controller';
-import { PersonRepository } from './person.repository';
-import { PersonService } from './person.service';
+import { StarWarsAPI } from 'src/swapi/swapi';
+import { PersonRepository } from './repository/person.repository';
+import { PersonService } from './service/person.service';
+import { PersonController } from './controller/person.controller';
 
 @Module({
   imports: [],

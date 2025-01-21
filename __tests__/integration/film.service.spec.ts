@@ -1,6 +1,6 @@
 import { AppModule } from 'src/app.module';
 import { Test } from '@nestjs/testing';
-import { StarWarsAPI } from 'src/api/swapi';
+import { StarWarsAPI } from 'src/swapi/swapi';
 import { PageDTO } from 'src/dto/page.dto';
 import { NotFoundException } from '@nestjs/common';
 import { FilmRepository } from 'src/film/film.repository';
@@ -81,7 +81,7 @@ describe('FilmServiceTest', () => {
     expect(data.data.length).toEqual(6);
   });
 
-  test('getFilms - should return cached films when api was already called', async () => {
+  test('getFilms - should return cached films when swapi was already called', async () => {
     // given
     spyGetFilms();
 
